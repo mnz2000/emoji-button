@@ -1,6 +1,5 @@
 import { TinyEmitter as Emitter } from 'tiny-emitter';
 
-import emojiData from './data/emoji';
 import { i18n as defaultI18n } from './i18n';
 
 import {
@@ -25,14 +24,6 @@ import { createElement } from './util';
 import { load } from './recent';
 
 const emojiCategories: { [key: string]: EmojiRecord[] } = {};
-emojiData.emoji.forEach(emoji => {
-  let categoryList = emojiCategories[emojiData.categories[emoji.category]];
-  if (!categoryList) {
-    categoryList = emojiCategories[emojiData.categories[emoji.category]] = [];
-  }
-
-  categoryList.push(emoji);
-});
 
 export class EmojiArea {
   private headerOffsets: number[];
@@ -53,7 +44,17 @@ export class EmojiArea {
     private options: EmojiButtonOptions
   ) {
     this.emojisPerRow = options.emojisPerRow || 8;
-    this.categories = options.categories || emojiData.categories;
+    this.categories = options.categories || options.emojiData?.categories || [];
+
+	if (options.emojiData) {
+		options.emojiData.emoji.forEach(emoji => {
+			let categoryList = emojiCategories[this.categories[emoji.category||0]];
+			if (!categoryList) {
+				categoryList = emojiCategories[this.categories[emoji.category||0]] = [];
+			}
+			categoryList.push(emoji);
+		});
+	}
 
     if (options.showRecents) {
       this.categories = ['recents', ...this.categories];
@@ -66,7 +67,7 @@ export class EmojiArea {
 
   updateRecents(): void {
     if (this.options.showRecents) {
-      emojiCategories.recents = load();
+      emojiCategories.recents = load(this.options.emojiData);
       const recentsContainer = this.emojis.querySelector(
         `.${CLASS_EMOJI_CONTAINER}`
       ) as HTMLElement;
@@ -100,7 +101,7 @@ export class EmojiArea {
     this.emojis = createElement('div', CLASS_EMOJIS);
 
     if (this.options.showRecents) {
-      emojiCategories.recents = load();
+      emojiCategories.recents = load(this.options.emojiData);
     }
 
     if (this.options.custom) {
@@ -142,10 +143,12 @@ export class EmojiArea {
       header => header.offsetTop
     ) as number[];
 
-    this.selectCategory(this.options.initialCategory || 'smileys', false);
-    this.currentCategory = this.categories.indexOf(
-      (this.options.initialCategory as string) || 'smileys'
-    );
+	var initialCategory=this.options.initialCategory || 'smileys';
+	if (initialCategory==='recents' && this.getEmojiCount(0)==0) {
+		initialCategory='smileys';
+	}
+    this.selectCategory(initialCategory, false);
+    this.currentCategory = this.categories.indexOf(initialCategory);
 
     if (this.options.showCategoryButtons) {
       this.categoryButtons.setActiveButton(this.currentCategory, false);
