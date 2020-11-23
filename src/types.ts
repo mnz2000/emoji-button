@@ -4,16 +4,22 @@ import { EmojiButton } from './index';
 export interface EmojiRecord {
   name: string;
   emoji: string;
+  keywords?: string;
   custom?: boolean;
   category?: number;
   version?: string;
-  variations?: string[];
+  variations?: Variation[];
   key?: string;
+}
+
+export interface Variation {
+	emoji: string;
+	name: string;
 }
 
 export interface EmojiData {
   categories: string[];
-  emojiData: EmojiRecord[];
+  emoji: EmojiRecord[];
 }
 
 export interface RecentEmoji {
@@ -42,6 +48,7 @@ export interface EmojiButtonOptions {
   showPreview?: boolean;
   showSearch?: boolean;
   showRecents?: boolean;
+  emojiData?: EmojiData,
   showVariants?: boolean;
   showCategoryButtons?: boolean;
   recentsCount?: number;

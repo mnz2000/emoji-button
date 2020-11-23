@@ -3044,6 +3044,15 @@
 1F368                                      ; fully-qualified     # 🍨 E0.6 ice cream
 1F369                                      ; fully-qualified     # 🍩 E0.6 doughnut
 1F36A                                      ; fully-qualified     # 🍪 E0.6 cookie
+1F36A 200D 1F600 FE0F                      ; fully-qualified     # 🍪 E0.6 cookie: deeply dark
+1F36A 200D 1F601 FE0F                      ; fully-qualified     # 🍪 E0.6 cookie: plain as milk
+1F36A 200D 1F602 FE0F                      ; fully-qualified     # 🍪 E0.6 cookie: not quite white
+1F36A 200D 1F603 FE0F                      ; fully-qualified     # 🍪 E0.6 cookie: so sad caramel
+1F36A 200D 1F604 FE0F                      ; fully-qualified     # 🍪 E0.6 cookie: mochaholic
+1F36A 200D 1F605 FE0F                      ; fully-qualified     # 🍪 E0.6 cookie: orange you mad
+1F36A 200D 1F606 FE0F                      ; fully-qualified     # 🍪 E0.6 cookie: pitiful lime
+1F36A 200D 1F607 FE0F                      ; fully-qualified     # 🍪 E0.6 cookie: simple strawberr
+1F36A 200D 1F608 FE0F                      ; fully-qualified     # 🍪 E0.6 cookie: ruby gloom
 1F382                                      ; fully-qualified     # 🎂 E0.6 birthday cake
 1F370                                      ; fully-qualified     # 🍰 E0.6 shortcake
 1F9C1                                      ; fully-qualified     # 🧁 E11.0 cupcake

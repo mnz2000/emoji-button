@@ -12,6 +12,8 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup -c",
     "build:watch": "rollup -cw",
+    "prebuild": "node scripts/processEmojiData.js en && node scripts/processEmojiData.js fi",
+    "postbuild": "uglifyjs src/data/emoji-plain-fi.js --compress --mangle --warn --output dist/emoji-fi.min.js",
     "prepublishOnly": "cross-env NODE_ENV=production rollup -c",
     "test": "jest src/**.test.ts",
     "test:watch": "jest --watchAll",
@@ -57,11 +59,18 @@
     "@fortawesome/free-regular-svg-icons": "^5.13.0",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@popperjs/core": "^2.4.0",
+    "bootstrap-icons": "^1.0.0",
+    "emoji-datasource-apple": "^6.0.0",
+    "emoji-datasource-facebook": "^6.0.0",
+    "emoji-datasource-google": "^6.0.0",
     "focus-trap": "^5.1.0",
     "fuzzysort": "^1.1.4",
     "tiny-emitter": "^2.1.0",
     "tslib": "^2.0.0",
-    "twemoji": "^13.0.0"
+    "twemoji": "github:mnz2000/twemoji",
+    "twemoji-parser": "github:mnz2000/twemoji-parser",
+    "uglify-js": "^3.11.5",
+    "xml2js": "^0.4.23"
   },
   "files": [
     "dist",

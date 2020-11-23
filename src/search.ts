@@ -67,8 +67,6 @@ export class Search {
     this.emojisPerRow = this.options.emojisPerRow || 8;
     this.emojiData = emojiData.filter(
       e =>
-        e.version &&
-        parseFloat(e.version) <= parseFloat(options.emojiVersion as string) &&
         e.category !== undefined &&
         categories.indexOf(e.category) >= 0
     );
@@ -213,13 +211,9 @@ export class Search {
       }
       this.searchIcon.style.cursor = 'pointer';
 
-      const searchResults = fuzzysort
-        .go(this.searchField.value, this.emojiData, {
-          allowTypo: true,
-          limit: 100,
-          key: 'name'
-        })
-        .map(result => result.obj);
+	  const searchValue=this.searchField.value;
+      const searchResults = this.emojiData.filter(e => 
+			e.keywords?e.keywords.indexOf(searchValue)>=0:false);
 
       this.events.emit(HIDE_PREVIEW);
 

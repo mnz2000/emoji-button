@@ -5,7 +5,7 @@ import { TinyEmitter as Emitter } from 'tiny-emitter';
 import { createPopper, Instance as Popper, Placement } from '@popperjs/core';
 import twemoji from 'twemoji';
 
-import emojiData from './data/emoji';
+import emojiData from './data/emoji-node-en';
 
 import {
   EMOJI,
@@ -52,6 +52,7 @@ const DEFAULT_OPTIONS: EmojiButtonOptions = {
   showVariants: true,
   showCategoryButtons: true,
   recentsCount: 50,
+  emojiData,
   emojiVersion: '12.1',
   theme: 'light',
   categories: [
@@ -69,7 +70,7 @@ const DEFAULT_OPTIONS: EmojiButtonOptions = {
   twemojiOptions: {
     ext: '.svg',
     folder: 'svg'
-  },
+  } as any,
   emojisPerRow: 8,
   rows: 6,
   emojiSize: '1.8em',
@@ -185,9 +186,9 @@ export class EmojiButton {
         this.events,
         this.i18n,
         this.options,
-        emojiData.emoji,
+        (this.options.emojiData?.emoji || []),
         (this.options.categories || []).map(category =>
-          emojiData.categories.indexOf(category)
+          this.options.emojiData?this.options.emojiData.categories.indexOf(category):0
         )
       ).render();
       this.pickerEl.appendChild(searchContainer);
@@ -243,6 +244,9 @@ export class EmojiButton {
 
           setTimeout(() => this.emojiArea.updateRecents());
 
+          if (this.options.autoHide) {
+            this.hidePicker();
+          }
           if (emoji.custom) {
             this.publicEvents.emit(EMOJI, {
               url: emoji.emoji,
@@ -265,9 +269,6 @@ export class EmojiButton {
               emoji: emoji.emoji,
               name: emoji.name
             });
-          }
-          if (this.options.autoHide) {
-            this.hidePicker();
           }
         }
       }
@@ -545,5 +546,15 @@ export class EmojiButton {
 
   private updateTheme(theme: EmojiTheme): void {
     this.pickerEl.classList.add(theme);
+  }
+  
+  parseEmoji(str: string, options: any): string {
+	// NOTE: Only works for a single emoji in the string for now.
+	// This is OK as it's called only in response to compositionend.
+	var opts = {
+		...this.options.twemojiOptions,
+		appendCallback: options?options.appendCallback:null
+	};
+	return twemoji.parse(str, opts);
   }
 }

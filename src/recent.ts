@@ -1,23 +1,24 @@
-import { EmojiRecord, EmojiButtonOptions, RecentEmoji } from './types';
+import { EmojiRecord, EmojiButtonOptions, RecentEmoji, EmojiData } from './types';
 
 const LOCAL_STORAGE_KEY = 'emojiPicker.recent';
 
-export function load(): Array<RecentEmoji> {
+export function load(emojiData): Array<RecentEmoji> {
   const recentJson = localStorage.getItem(LOCAL_STORAGE_KEY);
-  const recents = recentJson ? JSON.parse(recentJson) : [];
-  return recents.filter(recent => !!recent.emoji);
+  var recents = recentJson ? JSON.parse(recentJson) : [];
+  if (emojiData) {
+	  recents = recents.map(recent => emojiData.emoji.find(e=>e.emoji===recent.emoji));
+  }
+  return recents.filter(recent => recent && !!recent.emoji);
 }
 
 export function save(
   emoji: EmojiRecord | RecentEmoji,
   options: EmojiButtonOptions
 ): void {
-  const recents = load();
+  const recents = load(null);
 
   const recent = {
     emoji: emoji.emoji,
-    name: emoji.name,
-    key: (emoji as RecentEmoji).key || emoji.name,
     custom: emoji.custom
   };
 
@@ -26,7 +27,7 @@ export function save(
     JSON.stringify(
       [
         recent,
-        ...recents.filter((r: RecentEmoji) => !!r.emoji && r.key !== recent.key)
+        ...recents.filter((r: RecentEmoji) => !!r.emoji && r.emoji !== recent.emoji)
       ].slice(0, options.recentsCount)
     )
   );

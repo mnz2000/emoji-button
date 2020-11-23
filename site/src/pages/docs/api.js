@@ -442,6 +442,20 @@ export default function ApiDocs() {
 
             <tr>
               <th scope="row">
+                <code>twemojiOptions</code>
+              </th>
+              <td>object</td>
+              <td>
+                <code>'light'</code>
+              </td>
+              <td>
+                If <b>style</b> is set to <code>'native'</code>, this specifies
+				the options passed to the <code>twemoji</code> package.
+              </td>
+            </tr>
+
+            <tr>
+              <th scope="row">
                 <code>zIndex</code>
               </th>
               <td>number</td>

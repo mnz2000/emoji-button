@@ -68,8 +68,8 @@ export class VariantPopup {
       this.popup.appendChild(
         new Emoji(
           {
-            name: this.emoji.name,
-            emoji: variation,
+            name: variation.name,
+            emoji: variation.emoji,
             key: this.emoji.name + index
           },
           false,
